@@ -1,0 +1,90 @@
+#include <iostream>
+#include <cmath>
+#include <math.h>
+using namespace std;
+ 
+const int MAX_M = 10;
+const int MAX_K = 10;
+ 
+int main() {
+    // insert data
+    int n = 0, m = 0, k = 0;
+    cin >> n >> m >> k;
+     
+    int X[MAX_M] = {0};
+    for (int i = 1; i <= m; i++)
+        cin >> X[i];
+    int Y[MAX_M] = {0};
+    for (int i = 1; i <= m; i++)
+        cin >> Y[i];
+    int R[MAX_M] = {0};//威脅半徑
+    for (int i = 1; i <= m; i++)
+        cin >> R[i];
+    int P[MAX_M] = {0};//威脅程度
+    for (int i = 1; i <= m; i++)
+        cin >> P[i];
+     
+    int** route = new int* [k];
+    for (int i = 1; i <= k; i++)
+    {
+        route[i] = new int[4];
+        for (int j = 1; j <= 4; j++)
+        {
+            cin >> route[i][j];
+        }
+    }
+     
+    //calculate
+    double risk[MAX_K] = {0};
+    for (int i = 1; i <= k; i++)//route
+    {
+        float d = sqrt(pow(route[i][1] - route[i][3], 2) + pow(route[i][2] - route[i][4], 2));
+        float d1 = floor(d);
+        if (d > d1)
+            d1 = d1 + 1;
+         
+        for (int j = 1; j < d1; j++)
+        {
+            double x = route[i][1] + ((route[i][3] - route[i][1]) / d) * j;
+            double y = route[i][2] + ((route[i][4] - route[i][2]) / d) * j;
+         
+            for (int a = 1; a <= m; a++)//risk point座標
+            {
+                double distance = 0;
+                distance = sqrt(pow(x - X[a], 2) + pow(y - Y[a], 2));
+                if (distance <= R[a])
+                    risk[i] = risk[i] + P[a] * (R[a] - distance) / R[a];
+                else
+                    risk[i] = risk[i];
+            }
+        }
+    }
+     
+     
+    //find min
+    double minRisk = risk[1];
+    int min = 1;
+    for (int i = 1; i <= k; i++)
+    {
+        if (risk[i] < minRisk)
+        {
+            minRisk = risk[i];
+            min = i;
+        }
+    }
+    //find max
+    double maxRisk = risk[1];
+    int max = 1;
+    for (int i = 1; i <= k; i++)
+    {
+        if (risk[i] > maxRisk)
+        {
+            maxRisk = risk[i];
+            max = i;
+        }
+    }
+     
+    //print
+    cout << min << " " << max;
+    return 0;
+}
