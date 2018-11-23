@@ -1,0 +1,34 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+void findPoint (float x , float y ,int outcome[][4]);
+int main() {
+    there will be 4 points for both x and y,
+     outcome printed out
+     x1 x2 x3 x4
+     y1 y2 y3 y4
+
+    float x = 0 , y = 0 ;
+    cin >> x >> y ;
+    int outcome[4][4]={0};
+    findPoint (x,y,outcome);
+    return 0 ;
+}
+
+void findPoint (float x , float y ,int outcome[][4])
+{
+    outcome[0][0] = floor(x);
+    outcome[0][1] = ceil(x);
+    outcome[1][0] = floor(y);
+    outcome[1][1] = ceil(y);
+    outcome[0][2] = floor(x);
+    outcome[1][2] = ceil(y);
+    outcome[0][3] = ceil(x);
+    outcome[1][3] = floor(y);
+    
+    for ( int i = 0 ; i < 4 ; i++ )
+        cout << outcome[0][i] << " ";
+    cout << "\n";
+    for ( int i = 0 ; i < 4 ; i++ )
+        cout << outcome[1][i] << " ";
+}
